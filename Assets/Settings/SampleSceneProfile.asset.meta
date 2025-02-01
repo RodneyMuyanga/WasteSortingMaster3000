@@ -13,3 +13,10 @@ AssetOrigin:
   packageVersion: 1.0
   assetPath: Assets/Settings/SampleSceneProfile.asset
   uploadId: 668440
+AssetOrigin:
+  serializedVersion: 1
+  productId: 272637
+  packageName: Low Poly Factory Machine Pack Demo
+  packageVersion: 1.0
+  assetPath: Assets/Settings/SampleSceneProfile.asset
+  uploadId: 668440
