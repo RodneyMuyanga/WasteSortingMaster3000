@@ -16,13 +16,13 @@ public class WasteBin : MonoBehaviour
         if (other.CompareTag(correctTag))
         {
             Debug.Log("Correctly Sorted!");
-            scoreManager.UpdateScore(1);
+            //scoreManager.UpdateScore(1);
             Destroy(other.gameObject); 
         }
         else
         {
             Debug.Log("Wrong Bin!");
-            scoreManager.UpdateScore(-1);
+            //scoreManager.UpdateScore(-1);
         }
     }
 }

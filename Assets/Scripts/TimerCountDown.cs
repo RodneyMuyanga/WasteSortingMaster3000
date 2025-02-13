@@ -3,16 +3,33 @@ using TMPro;
 
 public class TimerCountDown : MonoBehaviour
 {
-    public TextMeshProUGUI timerText;  // UI-element til at vise timeren
-    private float timeLeft = 15f;      // Starttid på 15 sekunder
+    public TextMeshProUGUI timerText;  // Reference til timer-UI
+    public TextMeshProUGUI levelText;  // Reference til level-UI
+
+    private float timeLeft = 15f;  // Timeren starter på 15 sekunder
+    private int level = 1;  // Starter på Level 1
 
     void Update()
     {
-        timeLeft -= Time.deltaTime; // Reducer tid i sekunder
+        timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
-            timeLeft = 15f;  // Reset timeren til 15 sekunder
+            timeLeft = 15f; // Reset timeren
+            level++; // Level op!
+            UpdateLevelUI(); // Opdater UI for level
         }
-        timerText.text = "Tid: " + Mathf.Ceil(timeLeft).ToString(); // Opdater UI
+
+        if (timerText != null)
+        {
+            timerText.text = "Time left: " + Mathf.Ceil(timeLeft).ToString();
+        }
+    }
+
+    void UpdateLevelUI()
+    {
+        if (levelText != null)
+        {
+            levelText.text = "Level: " + level;
+        }
     }
 }
