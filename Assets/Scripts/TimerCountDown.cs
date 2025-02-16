@@ -21,7 +21,7 @@ public class TimerCountDown : MonoBehaviour
 
         if (timerText != null)
         {
-            timerText.text = "Time left: " + Mathf.Ceil(timeLeft).ToString();
+            timerText.text = "Time: " + Mathf.Ceil(timeLeft).ToString();
         }
     }
 
