@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class WasteCollectorPlastic : MonoBehaviour
 {
-    
     public String[] acceptedTags = { "Plastic" };
     public int scoreValue = 10;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("🟢 Collision detected with: " + other.gameObject.name); 
+        Debug.Log("🟢 Collision detected with: " + other.gameObject.name);
         foreach (string tag in acceptedTags)
         {
             if (other.CompareTag(tag))
@@ -21,7 +20,4 @@ public class WasteCollectorPlastic : MonoBehaviour
             }
         }
     }
-  
-
-  
 }

@@ -4,7 +4,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class WasteCollectorFood : MonoBehaviour
 {
-    
     public String[] acceptedTags = { "Food" };
     public int scoreValue = 10;
 
@@ -20,7 +19,4 @@ public class WasteCollectorFood : MonoBehaviour
             }
         }
     }
-  
-
-  
 }
