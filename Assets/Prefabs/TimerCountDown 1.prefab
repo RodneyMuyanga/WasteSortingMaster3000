@@ -325,7 +325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4277481377271690228}
-  - component: {fileID: 2051503290375500137}
+  - component: {fileID: 5263760544371029902}
   m_Layer: 0
   m_Name: TimerCountDown 1
   m_TagString: Untagged
@@ -351,7 +351,7 @@ Transform:
   - {fileID: 6537848852782869483}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2051503290375500137
+--- !u!114 &5263760544371029902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
