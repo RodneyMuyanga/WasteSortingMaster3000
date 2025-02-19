@@ -1,45 +1,47 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-// Spawns waste objects at random intervals and increases their speed over time
 public class WasteSpawner : MonoBehaviour
 {
-    public GameObject[] wastePrefabs; // Array of waste object prefabs
-    public float spawnAreaWidth = 12f; // Width of the spawn area
-    public float wasteSpeed = 5f; // Initial speed of waste objects
-    public float speedIncreaseRate = 0.3f; // Rate at which waste speed increases
-    public bool isGameOver = false; // Flag to check if the game is over
+    public GameObject[] wastePrefabs;  // Array to hold different waste prefabs
+    public float spawnAreaWidth = 12f;
+    public float wasteSpeed = 5f;
+    public float speedIncreaseRate = 0.3f;
+    public bool isGameOver = false;
 
-    private float minSpawnDelay = 0.5f; // Minimum delay (fastest spawning)
-    private float maxSpawnDelay = 4f; // Maximum initial delay
-    private float spawnDelayDecreaseRate = 0.05f; // Rate at which spawn delay decreases
-    private float currentMaxDelay; // Tracks the current max delay
+    private float minSpawnDelay = 0.5f;
+    private float maxSpawnDelay = 4f;
+    private float spawnDelayDecreaseRate = 0.05f;
+    private float currentMaxDelay;
+    private WastePool wastePool;
+    private GroundSpawner groundSpawner;
 
     void Start()
     {
-        currentMaxDelay = maxSpawnDelay; // Set initial spawn delay range
-        StartCoroutine(SpawnWasteWithDelay()); // Starts the coroutine to spawn waste at intervals
-        StartCoroutine(IncreaseWasteSpeedOverTime()); // Starts the coroutine to gradually increase waste speed
-        StartCoroutine(DecreaseSpawnDelayOverTime()); // Start reducing spawn delay
+        currentMaxDelay = maxSpawnDelay;
+        wastePool = FindObjectOfType<WastePool>();
+        groundSpawner = FindObjectOfType<GroundSpawner>();
+        StartCoroutine(SpawnWasteWithDelay());
+        StartCoroutine(IncreaseWasteSpeedOverTime());
+        StartCoroutine(DecreaseSpawnDelayOverTime());
     }
 
     IEnumerator SpawnWasteWithDelay()
     {
-        while (!isGameOver) // Keeps spawning waste until the game is over
+        while (!isGameOver)
         {
-            SpawnWaste(); // Calls function to spawn a waste object
-            float randomDelay = Random.Range(minSpawnDelay, currentMaxDelay); // Dynamic delay
-            yield return new WaitForSeconds(randomDelay); // Waits before spawning the next waste object
+            SpawnWaste();
+            float randomDelay = Random.Range(minSpawnDelay, currentMaxDelay);
+            yield return new WaitForSeconds(randomDelay);
         }
     }
 
     IEnumerator IncreaseWasteSpeedOverTime()
     {
-        while (!isGameOver) // Increases speed continuously until the game ends
+        while (!isGameOver)
         {
-            yield return new WaitForSeconds(1f); // Waits for 1 second before increasing speed
-            wasteSpeed += speedIncreaseRate; // Increases the speed of waste objects
+            yield return new WaitForSeconds(1f);
+            wasteSpeed += speedIncreaseRate;
         }
     }
 
@@ -47,40 +49,65 @@ public class WasteSpawner : MonoBehaviour
     {
         while (!isGameOver)
         {
-            yield return new WaitForSeconds(5f); // Every 5 seconds, reduce spawn delay
+            yield return new WaitForSeconds(5f);
             currentMaxDelay = Mathf.Max(minSpawnDelay, currentMaxDelay - spawnDelayDecreaseRate);
-            Debug.Log("New spawn delay range: " + minSpawnDelay + " to " + currentMaxDelay);
+            Debug.Log("New spawn delay range: " + minSpawnDelay + " to " + currentMaxDelay); // Debug log
         }
     }
 
     void SpawnWaste()
     {
-        if (wastePrefabs.Length == 0 || isGameOver) return; // Stops if no waste prefabs or game is over
-        if (GroundSpawner.spawnedTiles.Count == 0) return; // Stops if no ground tiles exist
+        if (wastePool == null)
+        {
+            Debug.LogError("WastePool not assigned!");
+            return;
+        }
+
+        if (GroundSpawner.spawnedTiles.Count == 0) return;
 
         // Get the latest spawned ground tile
         GameObject latestTile = GroundSpawner.spawnedTiles[GroundSpawner.spawnedTiles.Count - 1];
         Vector3 tilePosition = latestTile.transform.position;
-        
+
         // Get the tile's width dynamically
         Renderer tileRenderer = latestTile.GetComponent<Renderer>();
         float tileWidth = tileRenderer != null ? tileRenderer.bounds.size.x : 12f; // Default to 12 if no renderer
 
-        // Adjust position to be on top of the tile
+        // Adjust spawn position to be on top of the tile
         Vector3 startOfTile = latestTile.transform.GetChild(0).position; // Assuming first child is the front
 
         // Pick a random X position within the tile's width
         float randomX = Random.Range(-tileWidth / 2, tileWidth / 2);
         Vector3 spawnPosition = new Vector3(tilePosition.x + randomX, tilePosition.y + 1f, startOfTile.z); // On top of tile
 
-        // Choose a random waste item to spawn
-        int randomIndex = Random.Range(0, wastePrefabs.Length);
-        GameObject waste = Instantiate(wastePrefabs[randomIndex], spawnPosition, Quaternion.identity); // Spawn waste
+        // Fetch a pooled waste object
+        GameObject waste = wastePool.GetPooledWasteObject();
+        if (waste == null)
+        {
+            Debug.LogError("No pooled waste objects available!");
+            return;
+        }
 
-        WasteItem wasteScript = waste.GetComponent<WasteItem>(); 
+        // Reset the position of the pooled object
+        waste.transform.position = spawnPosition;
+        Debug.Log("Spawned waste at: " + spawnPosition); // Debugging spawn position
+
+        // Set the speed of the waste object
+        WasteItem wasteScript = waste.GetComponent<WasteItem>();
         if (wasteScript != null)
         {
-            wasteScript.SetSpeed(wasteSpeed); // Set waste speed
+            wasteScript.SetSpeed(wasteSpeed);
         }
+
+        // Return the object to the pool when it is destroyed or goes out of bounds (example for cleanup)
+        // Example: waste will return to pool after 5 seconds (or based on your game's mechanics)
+        StartCoroutine(ReturnWasteToPool(waste, 5f)); // Returns after 5 seconds
+    }
+
+    // Coroutine to handle returning the waste object to the pool
+    IEnumerator ReturnWasteToPool(GameObject waste, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        wastePool.ReturnToPool(waste); // Return to the pool after a delay
     }
 }

@@ -1,9 +1,8 @@
 using UnityEngine;
 
-//This is also just an example script, it's not attacked to anything yet
 public class WasteBin : MonoBehaviour
 {
-    public string correctTag; // 
+    public string correctTag; // Set in Unity Editor for each bin
     private ScoreManager scoreManager;
 
     private void Start()
@@ -13,11 +12,19 @@ public class WasteBin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (string.IsNullOrEmpty(other.gameObject.tag))
+        {
+            Debug.LogError("Tag is null or empty for: " + other.gameObject.name);
+            return;
+        }
+        
+        Debug.Log("Entering trigger with object: " + other.gameObject.name + " (Tag: " + other.gameObject.tag + ")");
+        
         if (other.CompareTag(correctTag))
         {
             Debug.Log("Correctly Sorted!");
             scoreManager.AddScore(1);
-            Destroy(other.gameObject); 
+            Destroy(other.gameObject);
         }
         else
         {

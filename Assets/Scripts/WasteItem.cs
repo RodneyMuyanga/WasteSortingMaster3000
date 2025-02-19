@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class WasteItem : MonoBehaviour
 {
-    private float speed = 5f; // Default speed
+    private float speed = 5f;
+    private bool isMoving = true; // Default to moving
 
     void Update()
     {
-        transform.position += new Vector3(0, 0, -speed * Time.deltaTime);
+        if (isMoving)
+        {
+            transform.position += new Vector3(0, 0, -speed * Time.deltaTime);
+        }
     }
 
-    //Method for updating speed
     public void SetSpeed(float newSpeed)
     {
-        speed = newSpeed; // Update speed dynamically
+        speed = newSpeed;
+    }
+
+    // Add this method to stop/start the movement
+    public void SetMoving(bool shouldMove)
+    {
+        isMoving = shouldMove;
     }
 }
