@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -811186319976209386, guid: 025cf766e2417f04bbe87b64bbde0b2d, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -811186319976209386, guid: 025cf766e2417f04bbe87b64bbde0b2d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d41a89164c4c04141be9d81c5a0408f5, type: 2}
     - target: {fileID: 8917467559420366896, guid: 025cf766e2417f04bbe87b64bbde0b2d, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
