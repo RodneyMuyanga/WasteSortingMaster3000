@@ -1,76 +1,71 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class WastePool : MonoBehaviour
 {
-    public GameObject[] wastePrefabs; // Array to hold different waste prefabs
-    private List<GameObject> pooledWasteObjects; // List to store pooled objects
-    public int poolSize = 10; // Number of objects to pool initially
+    public GameObject[] wastePrefabs;
+    private Queue<GameObject> pooledWasteObjects = new Queue<GameObject>();
+    public int poolSize = 10;
 
     void Awake()
     {
-        pooledWasteObjects = new List<GameObject>();
-        InitializePool(); // Initialize the pool of objects
+        InitializePool();
     }
 
-    // Initializes the pool with a predefined number of objects
+    // Initializes the pool with a set number of waste objects
     void InitializePool()
     {
-        if (wastePrefabs.Length == 0)
-        {
-            Debug.LogError("No wastePrefabs assigned!");
-            return;
-        }
+        if (wastePrefabs.Length == 0) return;
 
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject wasteObject = Instantiate(GetRandomWastePrefab()); // Instantiate a random prefab
-            wasteObject.SetActive(false); // Ensure the object is inactive initially
-            pooledWasteObjects.Add(wasteObject); // Add it to the pool
+            GameObject wasteObject = Instantiate(GetRandomWastePrefab());
+            wasteObject.SetActive(false);
+            pooledWasteObjects.Enqueue(wasteObject);
         }
-
-        Debug.Log("Pool initialized with " + pooledWasteObjects.Count + " objects.");
     }
 
-    // Gets a random prefab from the wastePrefabs array
+    // Returns a random waste prefab
     public GameObject GetRandomWastePrefab()
     {
-        if (wastePrefabs.Length == 0)
-        {
-            Debug.LogError("No wastePrefabs assigned!");
-            return null;
-        }
-
+        if (wastePrefabs.Length == 0) return null;
         int randomIndex = Random.Range(0, wastePrefabs.Length);
-        Debug.Log("Fetching prefab: " + wastePrefabs[randomIndex].name); // Debugging the selected prefab
         return wastePrefabs[randomIndex];
     }
 
-    // Returns a pooled object if available or creates a new one if necessary
+    // Gets a pooled waste object
     public GameObject GetPooledWasteObject()
     {
-        // Try to find an inactive object in the pool
-        for (int i = 0; i < pooledWasteObjects.Count; i++)
+        if (pooledWasteObjects.Count == 0) return null;
+        GameObject wasteObject = pooledWasteObjects.Dequeue();
+        if (wasteObject.activeInHierarchy)
         {
-            if (!pooledWasteObjects[i].activeInHierarchy)
-            {
-                pooledWasteObjects[i].SetActive(true); // Reactivate the object
-                Debug.Log("Returning pooled object: " + pooledWasteObjects[i].name); // Debugging log
-                return pooledWasteObjects[i];
-            }
+            StartCoroutine(WaitBeforeReuse(wasteObject));
+            return null;
         }
-
-        // If no pooled object is inactive, create a new one
-        GameObject newWasteObject = Instantiate(GetRandomWastePrefab());
-        pooledWasteObjects.Add(newWasteObject);
-        Debug.Log("Creating new pooled object: " + newWasteObject.name); // Debugging log
-        return newWasteObject;
+        wasteObject.SetActive(true);
+        pooledWasteObjects.Enqueue(wasteObject);
+        return wasteObject;
     }
 
-    // Method to return the pooled object back to the pool
+    // Returns a waste object to the pool
     public void ReturnToPool(GameObject wasteObject)
     {
-        wasteObject.SetActive(false); // Deactivate the object before returning it to the pool
-        Debug.Log("Returning object to pool: " + wasteObject.name); // Debugging log
+        StartCoroutine(DelayedReturn(wasteObject));
+    }
+
+    // Delays the return of an object to the pool
+    private IEnumerator DelayedReturn(GameObject wasteObject)
+    {
+        yield return new WaitForSeconds(0.2f);
+        wasteObject.SetActive(false);
+    }
+
+    // Delays the reuse of a waste object
+    private IEnumerator WaitBeforeReuse(GameObject wasteObject)
+    {
+        yield return new WaitForSeconds(1f);
+        pooledWasteObjects.Enqueue(wasteObject);
     }
 }
