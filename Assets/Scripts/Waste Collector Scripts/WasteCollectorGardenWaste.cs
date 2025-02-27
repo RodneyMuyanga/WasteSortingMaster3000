@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class WasteCollectorGardeWaste : MonoBehaviour
+public class WasteCollectorGardenWaste : MonoBehaviour
 {
     public String[] acceptedTags = { "GardenWaste" };
     public int scoreValue = 10;
