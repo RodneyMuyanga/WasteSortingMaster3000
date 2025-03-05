@@ -3293,6 +3293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mesh_WatterBottle_L
       objectReference: {fileID: 0}
+    - target: {fileID: 6050456093760686271, guid: 1125ade159568774fabaea18648529ce, type: 3}
+      propertyPath: m_TagString
+      value: Plastic
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4261,6 +4265,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_WaterBottle_S
       objectReference: {fileID: 0}
+    - target: {fileID: 5192368016331079986, guid: 7e477852a3db8a74a8e8b85ff29c5ebe, type: 3}
+      propertyPath: m_TagString
+      value: Plastic
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4487,6 +4495,10 @@ PrefabInstance:
     - target: {fileID: 3802344691026843448, guid: 3b70239e577309b4b9e9cd193e820170, type: 3}
       propertyPath: m_Name
       value: Prefab_SodaBottle_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802344691026843448, guid: 3b70239e577309b4b9e9cd193e820170, type: 3}
+      propertyPath: m_TagString
+      value: Plastic
       objectReference: {fileID: 0}
     - target: {fileID: 6060296159020548286, guid: 3b70239e577309b4b9e9cd193e820170, type: 3}
       propertyPath: m_LocalScale.x
@@ -6971,6 +6983,10 @@ PrefabInstance:
     - target: {fileID: 3866911150615150090, guid: 5e5e37a9e0c9a7e4fb1e0d57ccd2864c, type: 3}
       propertyPath: m_Name
       value: Prefab_WaterBottle_S_Crushed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3866911150615150090, guid: 5e5e37a9e0c9a7e4fb1e0d57ccd2864c, type: 3}
+      propertyPath: m_TagString
+      value: Plastic
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
