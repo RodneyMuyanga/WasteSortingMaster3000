@@ -8,13 +8,22 @@ public class WastePool : MonoBehaviour
     private Queue<GameObject> pooledWasteObjects = new Queue<GameObject>();
     public int poolSize = 10;
 
-    void Awake()
+    private void Awake()
     {
         InitializePool();
     }
 
-    // Initializes the pool with a set number of waste objects
-    void InitializePool()
+    private void OnEnable()
+    {
+        WasteBin.OnWasteSorted += ReturnToPool;
+    }
+
+    private void OnDisable()
+    {
+        WasteBin.OnWasteSorted -= ReturnToPool;
+    }
+
+    private void InitializePool()
     {
         if (wastePrefabs.Length == 0) return;
 
@@ -26,46 +35,39 @@ public class WastePool : MonoBehaviour
         }
     }
 
-    // Returns a random waste prefab
-    public GameObject GetRandomWastePrefab()
+    private GameObject GetRandomWastePrefab()
     {
         if (wastePrefabs.Length == 0) return null;
         int randomIndex = Random.Range(0, wastePrefabs.Length);
         return wastePrefabs[randomIndex];
     }
 
-    // Gets a pooled waste object
     public GameObject GetPooledWasteObject()
     {
         if (pooledWasteObjects.Count == 0) return null;
+
         GameObject wasteObject = pooledWasteObjects.Dequeue();
-        if (wasteObject.activeInHierarchy)
-        {
-            StartCoroutine(WaitBeforeReuse(wasteObject));
-            return null;
-        }
         wasteObject.SetActive(true);
-        pooledWasteObjects.Enqueue(wasteObject);
+
+        WasteItem wasteScript = wasteObject.GetComponent<WasteItem>();
+        if (wasteScript != null)
+        {
+            wasteScript.ResetItem();
+            wasteScript.SetSpeed(FindObjectOfType<WasteSpawner>().wasteSpeed);
+        }
+
         return wasteObject;
     }
 
-    // Returns a waste object to the pool
     public void ReturnToPool(GameObject wasteObject)
     {
         StartCoroutine(DelayedReturn(wasteObject));
     }
 
-    // Delays the return of an object to the pool
     private IEnumerator DelayedReturn(GameObject wasteObject)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         wasteObject.SetActive(false);
-    }
-
-    // Delays the reuse of a waste object
-    private IEnumerator WaitBeforeReuse(GameObject wasteObject)
-    {
-        yield return new WaitForSeconds(1f);
         pooledWasteObjects.Enqueue(wasteObject);
     }
 }

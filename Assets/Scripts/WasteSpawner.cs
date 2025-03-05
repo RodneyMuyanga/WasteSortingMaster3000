@@ -20,18 +20,16 @@ public class WasteSpawner : MonoBehaviour
         wastePool = FindObjectOfType<WastePool>();
         float initialDelay = Random.Range(0.5f, 2f);
         StartCoroutine(StartSpawningWithDelay(initialDelay));
-    }
-
-    // Starts spawning waste after an initial delay
-    IEnumerator StartSpawningWithDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(SpawnWasteWithDelay());
         StartCoroutine(IncreaseWasteSpeedOverTime());
         StartCoroutine(DecreaseSpawnDelayOverTime());
     }
 
-    // Spawns waste at random intervals
+    IEnumerator StartSpawningWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(SpawnWasteWithDelay());
+    }
+
     IEnumerator SpawnWasteWithDelay()
     {
         while (!isGameOver)
@@ -42,7 +40,6 @@ public class WasteSpawner : MonoBehaviour
         }
     }
 
-    // Increases the waste speed over time
     IEnumerator IncreaseWasteSpeedOverTime()
     {
         while (!isGameOver)
@@ -52,7 +49,6 @@ public class WasteSpawner : MonoBehaviour
         }
     }
 
-    // Decreases the spawn delay over time
     IEnumerator DecreaseSpawnDelayOverTime()
     {
         while (!isGameOver)
@@ -62,32 +58,45 @@ public class WasteSpawner : MonoBehaviour
         }
     }
 
-    // Spawns a waste object at a random position on the latest tile
     void SpawnWaste()
+{
+    if (wastePool == null) return;
+    if (GroundSpawner.spawnedTiles.Count == 0) return;
+
+    // Get the last spawned ground tile
+    GameObject latestTile = GroundSpawner.spawnedTiles[GroundSpawner.spawnedTiles.Count - 1];
+    Vector3 tilePosition = latestTile.transform.position;
+
+    // Get the width of the tile for random X position
+    Renderer tileRenderer = latestTile.GetComponent<Renderer>();
+    float tileWidth = tileRenderer != null ? tileRenderer.bounds.size.x : 12f;
+
+    // Find the front (start) of the tile
+    Vector3 startOfTile = latestTile.transform.GetChild(0).position;
+
+    // Define a safe margin from the edges where the waste can spawn
+    float safeMargin = 2f; // Adjust this value to determine how far from the edge you want to spawn
+
+    // Ensure random X position stays within the safe area
+    float randomX = Random.Range(-tileWidth / 2 + safeMargin, tileWidth / 2 - safeMargin);
+
+    // Set spawn position
+    Vector3 spawnPosition = new Vector3(tilePosition.x + randomX, tilePosition.y + 1f, startOfTile.z);
+
+    // Get an object from the pool
+    GameObject waste = wastePool.GetPooledWasteObject();
+    if (waste == null) return;
+
+    // Set position and activate
+    waste.transform.position = spawnPosition;
+    waste.SetActive(true);
+
+    // Ensure it moves in the correct direction
+    WasteItem wasteScript = waste.GetComponent<WasteItem>();
+    if (wasteScript != null)
     {
-        if (wastePool == null) return;
-
-        if (GroundSpawner.spawnedTiles.Count == 0) return;
-
-        GameObject latestTile = GroundSpawner.spawnedTiles[GroundSpawner.spawnedTiles.Count - 1];
-        Vector3 tilePosition = latestTile.transform.position;
-
-        Renderer tileRenderer = latestTile.GetComponent<Renderer>();
-        float tileWidth = tileRenderer != null ? tileRenderer.bounds.size.x : 12f;
-
-        Vector3 startOfTile = latestTile.transform.GetChild(0).position;
-
-        float randomX = Random.Range(-tileWidth / 2, tileWidth / 2);
-        Vector3 spawnPosition = new Vector3(tilePosition.x + randomX, tilePosition.y + 1f, startOfTile.z);
-
-        GameObject waste = wastePool.GetPooledWasteObject();
-        if (waste == null) return;
-
-        waste.transform.position = spawnPosition;
-        WasteItem wasteScript = waste.GetComponent<WasteItem>();
-        if (wasteScript != null)
-        {
-            wasteScript.SetSpeed(wasteSpeed);
-        }
+        wasteScript.SetSpeed(wasteSpeed);
     }
+}
+
 }

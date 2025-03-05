@@ -1,9 +1,13 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
 public class WasteBin : MonoBehaviour
 {
-    public string correctTag; // Set in Unity Editor for each bin
+    public string correctTag;
     private ScoreManager scoreManager;
+
+    public static event Action<GameObject> OnWasteSorted;
 
     private void Start()
     {
@@ -17,19 +21,38 @@ public class WasteBin : MonoBehaviour
             Debug.LogError("Tag is null or empty for: " + other.gameObject.name);
             return;
         }
-        
-        Debug.Log("Entering trigger with object: " + other.gameObject.name + " (Tag: " + other.gameObject.tag + ")");
-        
+
+        WasteItem wasteItem = other.GetComponent<WasteItem>();
+        if (wasteItem != null)
+        {
+            wasteItem.SetMoving(false);
+            StartCoroutine(DropIntoBin(other.transform));
+        }
+
         if (other.CompareTag(correctTag))
         {
-            Debug.Log("Correctly Sorted!");
             scoreManager.AddScore(1);
-            Destroy(other.gameObject);
         }
         else
         {
-            Debug.Log("Wrong Bin!");
             scoreManager.AddScore(-1);
         }
+    }
+
+    private IEnumerator DropIntoBin(Transform trash)
+    {
+        Vector3 targetPosition = transform.position + Vector3.down * 0.7f;
+        float dropSpeed = 2f;
+        float timer = 2f;
+
+        while (Vector3.Distance(trash.position, targetPosition) > 0.05f && timer > 0)
+        {
+            trash.position = Vector3.MoveTowards(trash.position, targetPosition, dropSpeed * Time.deltaTime);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        // Notify pooling even if the object doesn't reach the bottom
+        OnWasteSorted?.Invoke(trash.gameObject);
     }
 }
