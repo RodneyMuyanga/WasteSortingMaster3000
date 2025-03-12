@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 using System.Collections.Generic;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 
 // Spawns waste objects at random intervals and increases their speed over time
 public class WasteSpawner : MonoBehaviour
@@ -15,6 +18,10 @@ public class WasteSpawner : MonoBehaviour
     private float maxSpawnDelay = 4f; // Maximum initial delay
     private float spawnDelayDecreaseRate = 0.05f; // Rate at which spawn delay decreases
     private float currentMaxDelay; // Tracks the current max delay
+    private bool isFrozen = false;
+    public TextMeshProUGUI powerupText;
+    [SerializeField] public CinemachineVirtualCamera cinemachineCamera; 
+    private CinemachineBasicMultiChannelPerlin noise;
 
     void Start()
     {
@@ -22,12 +29,38 @@ public class WasteSpawner : MonoBehaviour
         StartCoroutine(SpawnWasteWithDelay()); // Starts the coroutine to spawn waste at intervals
         StartCoroutine(IncreaseWasteSpeedOverTime()); // Starts the coroutine to gradually increase waste speed
         StartCoroutine(DecreaseSpawnDelayOverTime()); // Start reducing spawn delay
+        
+        if (powerupText != null)
+        {
+            powerupText.gameObject.SetActive(false);
+        }
+
+        ScoreManager.OnFreezePowerup += FreezeSpawning;
+        if (cinemachineCamera != null)
+        {
+            noise = cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+
+            if (noise == null)
+            {
+                noise = cinemachineCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            }
+
+            if (noise == null)
+            {
+                Debug.LogError("CinemachineBasicMultiChannelPerlin component not found!");
+            }
+        }
     }
 
     IEnumerator SpawnWasteWithDelay()
     {
         while (!isGameOver) // Keeps spawning waste until the game is over
         {
+            while (isFrozen) // Stops spawning if frozen
+            {
+                yield return null;
+            }
+            
             SpawnWaste(); // Calls function to spawn a waste object
             float randomDelay = Random.Range(minSpawnDelay, currentMaxDelay); // Dynamic delay
             yield return new WaitForSeconds(randomDelay); // Waits before spawning the next waste object
@@ -82,5 +115,89 @@ public class WasteSpawner : MonoBehaviour
         {
             wasteScript.SetSpeed(wasteSpeed); // Set waste speed
         }
+    }
+
+    void FreezeSpawning()
+    {
+        Debug.Log("Powerup activated: Freezing spawn for 5 seconds!");
+        isFrozen = true;
+        
+        if (powerupText != null)
+        {
+            powerupText.text = "Powerup: Alt affald er frosset i 5 sekunder!";
+            powerupText.gameObject.SetActive(true);
+        }
+        
+        // Start kamera shake
+        if (noise != null)
+        {
+            StartCoroutine(CameraShake());
+        }
+        
+        WasteItem[] allWaste = FindObjectsOfType<WasteItem>();
+        foreach (var waste in allWaste)
+        {
+            waste.Freeze();
+        }
+        StartCoroutine(UnfreezeAfterDelay());
+    }
+    
+    IEnumerator CameraShake()
+    {
+        if (cinemachineCamera == null)
+        {
+            Debug.LogError("Cinemachine Camera is missing!");
+            yield break;
+        }
+
+        // Få fat i Noise-komponenten dynamisk
+        CinemachineBasicMultiChannelPerlin noise = cinemachineCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+        if (noise == null)
+        {
+            Debug.LogError("Noise component is missing!");
+            yield break;
+        }
+
+        float shakeDuration = 0.5f; // Hvor længe shake varer
+        float shakeAmplitude = 3f; // Styrken af rystelsen
+        float shakeFrequency = 5f; // Hvor hurtigt det ryster
+
+        Debug.Log("Starting Camera Shake"); // Debug-log
+
+        // Sæt Noise Profile til at ryste
+        noise.AmplitudeGain = shakeAmplitude;
+        noise.FrequencyGain = shakeFrequency;
+
+        yield return new WaitForSeconds(shakeDuration); // Vent 0.5 sekunder
+
+        // Stop kamera shake
+        noise.AmplitudeGain = 0f;
+        noise.FrequencyGain = 0f;
+
+        Debug.Log("Stopping Camera Shake"); // Debug-log
+    }
+
+
+
+
+
+
+    
+    IEnumerator UnfreezeAfterDelay()
+    {
+        yield return new WaitForSeconds(5f);
+        isFrozen = false;
+        if (powerupText != null)
+        {
+            powerupText.gameObject.SetActive(false);
+        }
+        
+        WasteItem[] allWaste = FindObjectsOfType<WasteItem>();
+        foreach (var waste in allWaste)
+        {
+            waste.Unfreeze();
+        }
+        Debug.Log("Spawning resumed.");
     }
 }

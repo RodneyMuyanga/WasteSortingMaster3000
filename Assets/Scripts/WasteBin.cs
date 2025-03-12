@@ -11,7 +11,7 @@ public class WasteBin : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    /* private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(correctTag))
         {
@@ -24,5 +24,5 @@ public class WasteBin : MonoBehaviour
             Debug.Log("Wrong Bin!");
             scoreManager.AddScore(-1);
         }
-    }
+    } */
 }

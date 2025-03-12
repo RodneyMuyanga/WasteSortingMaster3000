@@ -8,7 +8,11 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
     public TextMeshProUGUI scoreText;
     [SerializeField] private int score = 0;
+    private bool powerupTriggered = false;
 
+    public delegate void PowerupEvent();
+    public static event PowerupEvent OnFreezePowerup;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -26,6 +30,12 @@ public class ScoreManager : MonoBehaviour
         score += value;
         Debug.Log("Score: " + score);
        UpdateScoreUI();
+       
+       if (score == 150 && !powerupTriggered)
+       {
+           powerupTriggered = true;
+           OnFreezePowerup?.Invoke();
+       }
     }
 
     public void UpdateScoreUI()
