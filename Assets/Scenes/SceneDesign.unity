@@ -1957,6 +1957,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4035618681403849622, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
       insertIndex: -1
       addedObject: {fileID: 884016470}
+    - targetCorrespondingSourceObject: {fileID: 4035618681403849622, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 884016471}
   m_SourcePrefab: {fileID: 100100000, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
 --- !u!4 &558613762 stripped
 Transform:
@@ -3214,6 +3217,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &884016471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884016464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f8def5ba57d1d4d846bc1970668ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedTags:
+  - Food
+  scoreValue: 10
 --- !u!1 &892307065
 GameObject:
   m_ObjectHideFlags: 0
@@ -3503,7 +3521,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 272069670}
+  boosterText: {fileID: 0}
   score: 0
+  scoreSound: {fileID: 0}
 --- !u!4 &1004594188
 Transform:
   m_ObjectHideFlags: 0
@@ -4726,6 +4746,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0073291b061a8748a20e7c9e0d55882, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1589015365}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0073291b061a8748a20e7c9e0d55882, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1589015366}
   m_SourcePrefab: {fileID: 100100000, guid: b0073291b061a8748a20e7c9e0d55882, type: 3}
 --- !u!4 &1504308348 stripped
 Transform:
@@ -5016,6 +5039,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1589015366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242254569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3960dc2462fc25342bf1a90576c0c440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedTags:
+  - Glass
+  scoreValue: 10
 --- !u!1001 &1600977233
 PrefabInstance:
   m_ObjectHideFlags: 0
