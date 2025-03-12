@@ -23,6 +23,7 @@ public class WasteBin : MonoBehaviour
         {
             Debug.Log("Wrong Bin!");
             scoreManager.AddScore(-1);
+            GameOverManager.Instance.AddWrongSort(); // Tilføjer fejl til GameOverManager
         }
     }
 }
