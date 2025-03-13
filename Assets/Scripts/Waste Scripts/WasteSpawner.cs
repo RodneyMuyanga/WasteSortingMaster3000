@@ -20,8 +20,6 @@ public class WasteSpawner : MonoBehaviour
     private float currentMaxDelay; // Tracks the current max delay
     private bool isFrozen = false;
     public TextMeshProUGUI powerupText;
-    [SerializeField] public CinemachineVirtualCamera cinemachineCamera; 
-    private CinemachineBasicMultiChannelPerlin noise;
 
     void Start()
     {
@@ -36,20 +34,6 @@ public class WasteSpawner : MonoBehaviour
         }
 
         ScoreManager.OnFreezePowerup += FreezeSpawning;
-        if (cinemachineCamera != null)
-        {
-            noise = cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
-
-            if (noise == null)
-            {
-                noise = cinemachineCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            }
-
-            if (noise == null)
-            {
-                Debug.LogError("CinemachineBasicMultiChannelPerlin component not found!");
-            }
-        }
     }
 
     IEnumerator SpawnWasteWithDelay()
@@ -128,12 +112,6 @@ public class WasteSpawner : MonoBehaviour
             powerupText.gameObject.SetActive(true);
         }
         
-        // Start kamera shake
-        if (noise != null)
-        {
-            StartCoroutine(CameraShake());
-        }
-        
         WasteItem[] allWaste = FindObjectsOfType<WasteItem>();
         foreach (var waste in allWaste)
         {
@@ -142,46 +120,6 @@ public class WasteSpawner : MonoBehaviour
         StartCoroutine(UnfreezeAfterDelay());
     }
     
-    IEnumerator CameraShake()
-    {
-        if (cinemachineCamera == null)
-        {
-            Debug.LogError("Cinemachine Camera is missing!");
-            yield break;
-        }
-
-        // Få fat i Noise-komponenten dynamisk
-        CinemachineBasicMultiChannelPerlin noise = cinemachineCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
-        if (noise == null)
-        {
-            Debug.LogError("Noise component is missing!");
-            yield break;
-        }
-
-        float shakeDuration = 0.5f; // Hvor længe shake varer
-        float shakeAmplitude = 3f; // Styrken af rystelsen
-        float shakeFrequency = 5f; // Hvor hurtigt det ryster
-
-        Debug.Log("Starting Camera Shake"); // Debug-log
-
-        // Sæt Noise Profile til at ryste
-        noise.AmplitudeGain = shakeAmplitude;
-        noise.FrequencyGain = shakeFrequency;
-
-        yield return new WaitForSeconds(shakeDuration); // Vent 0.5 sekunder
-
-        // Stop kamera shake
-        noise.AmplitudeGain = 0f;
-        noise.FrequencyGain = 0f;
-
-        Debug.Log("Stopping Camera Shake"); // Debug-log
-    }
-
-
-
-
-
 
     
     IEnumerator UnfreezeAfterDelay()
