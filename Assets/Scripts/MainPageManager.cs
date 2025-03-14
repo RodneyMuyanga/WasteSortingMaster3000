@@ -8,7 +8,7 @@ public class MainPageManager : MonoBehaviour
 void Start()
 {
     //PlayerPrefs.DeleteAll();
-    //PlayerPrefs.Save();
+    //PlayerPrefs.Save();   
 }
 
     public TMP_InputField nameInputField;
