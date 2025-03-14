@@ -38,10 +38,18 @@ public class ScoreManager : MonoBehaviour
 
 public void EndGame()
 {
-    int finalScore = score;
     string playerName = PlayerPrefs.GetString("PlayerName", "Unknown");
 
-    Debug.Log("Henter PlayerName fra PlayerPrefs: " + playerName);
+    if (playerName == "Unknown")
+    {
+        Debug.LogError("Fejl: PlayerName blev ikke fundet i PlayerPrefs!");
+    }
+    else
+    {
+        Debug.Log("Henter PlayerName fra PlayerPrefs: " + playerName);
+    }
+
+    int finalScore = score;
 
     if (!PlayerPrefs.HasKey("HighscoreKeys"))
     {
@@ -59,11 +67,11 @@ public void EndGame()
     PlayerPrefs.Save();
 
     // Find HighscoreManager og opdater highscore
-    HighscoreManager highscoreManager = FindObjectOfType<HighscoreManager>();
-    if (highscoreManager != null)
+    HighScoreManager highScoreManager = FindObjectOfType<HighScoreManager>();
+    if (highScoreManager != null)
     {
-        Debug.Log("✅ HighscoreManager fundet, opdaterer score...");
-        highscoreManager.UpdateHighscore(playerName, finalScore);
+        Debug.Log("HighscoreManager fundet, opdaterer score...");
+        highScoreManager.UpdateHighscore(playerName, finalScore);
     }
     else
     {
@@ -71,6 +79,6 @@ public void EndGame()
     }
 
     SceneManager.LoadScene("HighscoreScene");
-	}
+}
 
 }

@@ -9,29 +9,36 @@ void Start()
 {
     //PlayerPrefs.DeleteAll();
     //PlayerPrefs.Save();
-	Debug.Log("PlayerName fra PlayerPrefs: " + PlayerPrefs.GetString("PlayerName", "Ingen navn fundet"));
 }
 
     public TMP_InputField nameInputField;
 
-    public void StartGame()
+	public void StartGame()
 {
-    string playerName = nameInputField.text.Trim(); // Trim fjerner mellemrum før og efter tekst
+    Debug.Log("StartGame() kaldt!");
 
-    if (!string.IsNullOrEmpty(playerName)) 
+    if (nameInputField == null)
+    {
+        Debug.LogError("Fejl: nameInputField er tom");
+        return;
+    }
+
+    string playerName = nameInputField.text.Trim(); // Trim fjerner mellemrum i starten/slut
+    Debug.Log("Indtastet navn: " + playerName);
+
+    if (!string.IsNullOrEmpty(playerName))
     {
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.Save();
-        Debug.Log("Spillernavn gemt: " + playerName);
+        Debug.Log("PlayerName gemt: " + playerName);
     }
     else
     {
-        Debug.LogError("Fejl: Ingen spillernavn indtastet!");
+        Debug.LogError("Fejl: PlayerName er tomt!");
     }
 
     SceneManager.LoadScene("SceneDesign");
 }
-
 
     public void ShowHighscores()
     {

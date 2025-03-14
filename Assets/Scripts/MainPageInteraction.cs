@@ -1,17 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Events; 
 public class MainPageInteraction: MonoBehaviour
 {
+
+	public UnityEvent onClickEvent;
+
     void OnMouseDown()
     {
-        if (gameObject.name == "StartGameSign")
-        {
-            SceneManager.LoadScene("SceneDesign");
-        }
-        else if (gameObject.name == "HighscoreSign")
-        {
-            SceneManager.LoadScene("HighscoreScene");
-        }
+		onClickEvent.Invoke(); 
     }
 }

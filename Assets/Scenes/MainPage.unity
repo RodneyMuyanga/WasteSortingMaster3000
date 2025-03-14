@@ -152,6 +152,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 962df309130840ee805c8bd751e7521c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onClickEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 832988470}
+        m_TargetAssemblyTypeName: MainPageManager, Assembly-CSharp
+        m_MethodName: ShowHighscores
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &147102808
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -728,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0d4e0695c84ab88377857c1ae1ce2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameInputField: {fileID: 0}
+  nameInputField: {fileID: 208068962}
 --- !u!4 &832988471
 Transform:
   m_ObjectHideFlags: 0
@@ -995,8 +1010,8 @@ GameObject:
   - component: {fileID: 1126512957}
   - component: {fileID: 1126512956}
   - component: {fileID: 1126512955}
-  - component: {fileID: 1126512954}
   - component: {fileID: 1126512959}
+  - component: {fileID: 1126512960}
   m_Layer: 0
   m_Name: StartGameSign
   m_TagString: Untagged
@@ -1004,18 +1019,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1126512954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126512953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962df309130840ee805c8bd751e7521c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &1126512955
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1128,6 +1131,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1126512960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126512953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962df309130840ee805c8bd751e7521c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 832988470}
+        m_TargetAssemblyTypeName: MainPageManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1166286083
 GameObject:
   m_ObjectHideFlags: 0
