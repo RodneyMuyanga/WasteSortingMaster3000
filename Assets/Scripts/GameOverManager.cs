@@ -27,13 +27,13 @@ public class GameOverManager : MonoBehaviour
 
         if (wrongSorts >= maxWrongSorts)
         {
-            GameOver();
+            // GameOver();
         }
     }
 
-    private void GameOver()
-    {
-        Debug.Log("Game Over! Spilleren lavede 3 fejl.");
-        ScoreManager.Instance.EndGame(); // Kalder EndGame() i ScoreManager
-    }
+    // private void GameOver()
+    // {
+    //     Debug.Log("Game Over! Spilleren lavede 3 fejl.");
+    //     ScoreManager.Instance.EndGame(); // Kalder EndGame() i ScoreManager
+    // }
 }

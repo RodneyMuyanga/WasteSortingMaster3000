@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using Unity.VisualScripting;
 
 // Spawns waste objects at random intervals and increases their speed over time
@@ -33,7 +32,7 @@ public class WasteSpawner : MonoBehaviour
             powerupText.gameObject.SetActive(false);
         }
 
-        ScoreManager.OnFreezePowerup += FreezeSpawning;
+        // ScoreManager.OnFreezePowerup += FreezeSpawning;
     }
 
     IEnumerator SpawnWasteWithDelay()
