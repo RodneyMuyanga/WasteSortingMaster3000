@@ -2,39 +2,69 @@ using UnityEngine;
 
 public class WasteItem : MonoBehaviour
 {
-    private float speed = 5f; // Default speed
-    private float originalSpeed;
-    private bool isFrozen = false;
+    private float speed = 5f;
+    private bool isMoving = true;
+    private WastePool wastePool;
+    private Rigidbody rb;
 
-    void start()
+    void Start()
     {
-        originalSpeed = speed;
+        wastePool = FindObjectOfType<WastePool>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (!isFrozen)
+        if (isMoving)
         {
             transform.position += new Vector3(0, 0, -speed * Time.deltaTime);
+
+            if (IsOutOfBounds())
+            {
+                ReturnToPool();
+            }
         }
     }
 
-    //Method for updating speed
     public void SetSpeed(float newSpeed)
     {
-        speed = newSpeed; // Update speed dynamically
-        originalSpeed = newSpeed;
+        speed = newSpeed;
     }
 
-    public void Freeze()
+    public void SetMoving(bool shouldMove)
     {
-        isFrozen = true;
-        speed = 0f;
+        isMoving = shouldMove;
     }
 
-    public void Unfreeze()
+    private bool IsOutOfBounds()
     {
-        isFrozen = false;
-        speed = originalSpeed;
+        if (Camera.main == null) return false;
+        float cameraZ = Camera.main.transform.position.z;
+        return transform.position.z < cameraZ - 15f; // Increased buffer
+    }
+
+    public void ResetItem()
+    {
+        isMoving = true;
+        rb.isKinematic = false;
+        rb.velocity = Vector3.zero;
+    }
+
+    private void ReturnToPool()
+    {
+        if (wastePool != null)
+        {
+            wastePool.ReturnToPool(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("GarbageCan"))
+        {
+            rb.velocity = Vector3.zero;
+            rb.isKinematic = true;
+            isMoving = false;
+        }
     }
 }
