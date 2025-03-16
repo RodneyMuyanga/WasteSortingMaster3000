@@ -47,7 +47,7 @@ public class WasteItem : MonoBehaviour
     {
         isMoving = true;
         rb.isKinematic = false;
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
     }
 
     private void ReturnToPool()
@@ -62,7 +62,7 @@ public class WasteItem : MonoBehaviour
     {
         if (other.CompareTag("GarbageCan"))
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.isKinematic = true;
             isMoving = false;
         }
