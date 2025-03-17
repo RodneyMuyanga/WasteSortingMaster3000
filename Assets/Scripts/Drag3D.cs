@@ -28,7 +28,7 @@ public class Drag3D : MonoBehaviour
         if (rb != null)
         {
             rb.useGravity = false;
-            rb.velocity = Vector3.zero; // Stop any movement
+            rb.linearVelocity = Vector3.zero; // Stop any movement
         }
 
         // Adjust the drag plane to be higher when picking up
@@ -70,7 +70,7 @@ public class Drag3D : MonoBehaviour
         if (rb != null)
         {
             rb.useGravity = true;
-            rb.velocity = Vector3.zero; // Stop any movement when dropped
+            rb.linearVelocity = Vector3.zero; // Stop any movement when dropped
         }
 
         // Start smooth transition to the target Y position (e.g., conveyor or garbage can height)
