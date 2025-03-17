@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WasteItemw : MonoBehaviour
+public class WasteItem : MonoBehaviour
 {
     private float speed = 5f;
     private bool isMoving = true;
