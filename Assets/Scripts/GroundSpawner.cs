@@ -7,8 +7,8 @@ public class GroundSpawner : MonoBehaviour
     public float tileSpeed = 2f; // Made public
     private Vector3 nextSpawnPoint;
     public static List<GameObject> spawnedTiles = new List<GameObject>();
-    public int maxTiles = 50;
-    public float initialSpawnOffset = 10f;
+    public int maxTiles = 5;
+    public float initialSpawnOffset = 5f;
 
     void SpawnTile()
     {

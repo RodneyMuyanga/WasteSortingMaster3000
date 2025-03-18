@@ -2053,14 +2053,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2012433269}
     m_Modifications:
-    - target: {fileID: 3695965884115968300, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.68666387
-      objectReference: {fileID: 0}
-    - target: {fileID: 3695965884115968300, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.6249703
-      objectReference: {fileID: 0}
     - target: {fileID: 469650825304701907, guid: 53c9ccf4a2d374807b9618af6cafc64a, type: 3}
       propertyPath: m_Name
       value: Prefab_TrashCart_Opened
@@ -2116,6 +2108,14 @@ PrefabInstance:
     - target: {fileID: 1256707505656528516, guid: 53c9ccf4a2d374807b9618af6cafc64a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695965884115968300, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.68666387
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695965884115968300, guid: 414cadc8392ee89489bb741f0e5d2848, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.6249703
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -4597,6 +4597,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f8def5ba57d1d4d846bc1970668ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptedTags:
+  - Food
+  scoreValue: 10
 --- !u!54 &1232843117
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5697,7 +5700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTile: {fileID: 1474306090711255237, guid: d5447f23c129e20469211c89e50277b5, type: 3}
   tileSpeed: 2
-  maxTiles: 50
+  maxTiles: 14
   initialSpawnOffset: 10
 --- !u!4 &1710949158
 Transform:
@@ -7027,6 +7030,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b69d22f21000cf418adbb768a8f8d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptedTags:
+  - Plastic
+  scoreValue: 10
 --- !u!4 &1966929340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1495910517074145531, guid: 5e5e37a9e0c9a7e4fb1e0d57ccd2864c, type: 3}
@@ -7152,7 +7158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efacf422d104bdcbc92c89fe23a0cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnAreaWidth: 12
+  spawnAreaWidth: 8
   wasteSpeed: 5
   speedIncreaseRate: 0.3
   isGameOver: 0
